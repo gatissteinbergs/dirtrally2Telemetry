@@ -11,8 +11,8 @@ public class MainController {
 
     private PacketController packetController = new PacketController(20777);
 
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
+    @MessageMapping("/getTele")
+    @SendTo("/topic/dr2Tele")
     public Packet sendPacket() {
             return packetController.getPacket();
     }

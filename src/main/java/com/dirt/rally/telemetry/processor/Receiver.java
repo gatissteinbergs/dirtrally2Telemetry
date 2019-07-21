@@ -6,9 +6,8 @@ import java.net.DatagramSocket;
 
 public class Receiver extends Thread {
 
-    private static int MAX_BUFFER = 2048;
-    private boolean stop = false;
-    private int port = 20777;
+    private static final int MAX_BUFFER = 2048;
+    private int port;
     private PacketController packetController;
 
     public Receiver(int port, PacketController packetController) {

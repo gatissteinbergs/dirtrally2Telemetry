@@ -3,23 +3,17 @@ var stompClient = null;
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
     $("#disconnect").prop("disabled", !connected);
-    if (connected) {
-        $("#conversation").show();
-    } else {
-        $("#conversation").hide();
-    }
-    $("#greetings").html("");
 }
 
 function connect() {
-    var socket = new SockJS('/gs-guide-websocket');
+    var socket = new SockJS('/dirt2TelemetryWS');
     stompClient = Stomp.over(socket);
     stompClient.debug = null;
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
-            showGreeting(JSON.parse(greeting.body));
+        stompClient.subscribe('/topic/dr2Tele', function (data) {
+            showData(JSON.parse(data.body));
         });
     });
 }
@@ -32,11 +26,7 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
-}
-
-function showGreeting(message) {
+function showData(message) {
 
     var data = "";
 
@@ -57,21 +47,16 @@ $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
-    connect();
     $("#disconnect").click(function () {
         disconnect();
     });
-    $("#send").click(function () {
-        sendName();
+    $("#connect").click(function () {
+        connect();
     });
 });
 
 function showTime() {
-
-
     setTimeout(showTime, 100);
-    sendName();
-
 }
 connect();
 showTime();
