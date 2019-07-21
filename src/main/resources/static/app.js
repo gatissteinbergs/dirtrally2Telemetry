@@ -13,6 +13,7 @@ function connect() {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/dr2Tele', function (data) {
+            console.log(data.body);
             showData(JSON.parse(data.body));
         });
     });
@@ -35,12 +36,27 @@ function showData(message) {
     });
 
     $("#brakeTempBl").val(message.brakeTempBl);
+
     $("#brakeTempBr").val(message.brakeTempBr);
+
     $("#brakeTempFl").val(message.brakeTempFl);
+
     $("#brakeTempFr").val(message.brakeTempFr);
 
+    $("#throttleInput").val(message.throttleInput);
 
-    $("#dataTable").html(data);
+    $("#brakeInput").val(message.brakeInput);
+
+    $("#clutchInput").val(message.clutchInput);
+
+    $("#gear").val(message.gear);
+
+    $("#totalTime").html(message.totalTime);
+    $("#lapTime").html(message.lapTime);
+    $("#sectorTime1").html(message.sectorTime1);
+    $("#sectorTime2").html(message.sectorTime2);
+    $("#lastLapTime").html(message.lastLapTime);
+
 }
 
 $(function () {
@@ -57,6 +73,10 @@ $(function () {
 
 function showTime() {
     setTimeout(showTime, 100);
+    sendRequest();
+}
+function sendRequest() {
+    stompClient.send("/app/getTele", {}, "");
 }
 connect();
 showTime();

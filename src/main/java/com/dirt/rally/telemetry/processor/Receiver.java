@@ -10,7 +10,7 @@ public class Receiver extends Thread {
     private int port;
     private PacketController packetController;
 
-    public Receiver(int port, PacketController packetController) {
+    Receiver(int port, PacketController packetController) {
         this.port = port;
         this.packetController = packetController;
     }
